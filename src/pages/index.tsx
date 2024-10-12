@@ -29,6 +29,7 @@ export default function Home() {
         utils.chart.getDiseaseMetrics.setData(undefined, () => newData);
       },
     });
+  // NOTE: Dummy test
 
   return (
     <>
