@@ -1,21 +1,38 @@
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { charts } from "~/server/db/schema";
+import { db } from "~/server/db";
+import { diseaseCharts } from "~/server/db/schema";
 
 import { type IChartsData } from "~/server/model";
 
 export const chartsRouter = createTRPCRouter({
-  getDiseaseDataByPageNumber: publicProcedure
-    .input(z.object({ pageNumber: z.number().nullable() }).nullable())
-    .query(async ({ input }) => {
-      // NOTE: any other param other than pageNumber returns empty array
-      const data = await fetch(
-        `https://api.ukhsa-dashboard.data.gov.uk/themes/infectious_disease/sub_themes/respiratory/topics/COVID-19/geography_types/Nation/geographies/England/metrics/COVID-19_testing_PCRcountByDay?format=json${
-          input?.pageNumber ? `&page=${input.pageNumber}` : ""
-        }`
-      );
+  getDiseaseMetrics: publicProcedure.query(async () => {
+    const diseaseCharts = await db.query.diseaseCharts.findMany();
 
-      return (await data.json()) as IChartsData;
+    const diseaseChartsData = await Promise.all<IChartsData>(
+      diseaseCharts.map((diseaseChart) =>
+        fetch(diseaseChart.url).then((response) => response.json())
+      )
+    );
+
+    return diseaseChartsData
+      .map((diseaseChartsDataEntry, index) => {
+        return { ...diseaseChartsDataEntry, ...diseaseCharts[index] };
+      })
+      .sort((a, b) => a.id! - b.id!);
+  }),
+  toggleFavoriteChart: publicProcedure
+    .input(z.object({ chartId: z.number(), isFavorite: z.boolean() }))
+    .mutation(async ({ input }) => {
+      console.log(input);
+      const [diseaseChart] = await db
+        .update(diseaseCharts)
+        .set({ isFavorite: input.isFavorite })
+        .where(eq(diseaseCharts.id, input.chartId))
+        .returning();
+
+      return { diseaseChart };
     }),
 });

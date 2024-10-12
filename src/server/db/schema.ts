@@ -1,7 +1,6 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
 import { pgTableCreator, serial, varchar, boolean } from "drizzle-orm/pg-core";
 
 /**
@@ -12,8 +11,9 @@ import { pgTableCreator, serial, varchar, boolean } from "drizzle-orm/pg-core";
  */
 export const createTable = pgTableCreator((name) => `visualizer_${name}`);
 
-export const charts = createTable("chart", {
+export const diseaseCharts = createTable("chart", {
   id: serial("id").primaryKey(),
   url: varchar("url", { length: 256 }).notNull(),
+  title: varchar("title", { length: 256 }).notNull(),
   isFavorite: boolean("is_favorite"),
 });

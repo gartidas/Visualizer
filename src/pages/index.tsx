@@ -14,11 +14,20 @@ import {
 } from "recharts";
 
 export default function Home() {
-  const { data: firstPageData } =
-    api.chart.getDiseaseDataByPageNumber.useQuery(null);
-  const { data: secondPageData } =
-    api.chart.getDiseaseDataByPageNumber.useQuery({
-      pageNumber: 2,
+  const utils = api.useUtils();
+  const { data } = api.chart.getDiseaseMetrics.useQuery();
+  const { mutateAsync: toggleFavoriteChart } =
+    api.chart.toggleFavoriteChart.useMutation({
+      onSuccess: ({ diseaseChart }) => {
+        const previousData = utils.chart.getDiseaseMetrics.getData();
+
+        const newData = previousData?.map((chartData) =>
+          chartData.id === diseaseChart?.id
+            ? { ...chartData, isFavorite: diseaseChart?.isFavorite }
+            : chartData
+        );
+        utils.chart.getDiseaseMetrics.setData(undefined, () => newData);
+      },
     });
 
   return (
@@ -57,24 +66,32 @@ export default function Home() {
               </div>
             </Link>
           </div>
-          <BarChart width={730} height={250} data={firstPageData?.results}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis dataKey="metric_value" />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="metric_value" fill="#8884d8" />
-          </BarChart>
-          <button>Like me</button>
-          <BarChart width={730} height={250} data={secondPageData?.results}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis dataKey="metric_value" />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="metric_value" fill="#8884d8" />
-          </BarChart>
-          <button>Like me</button>
+          {data?.map((diseaseChart) => (
+            <div key={diseaseChart.id}>
+              <div style={{ color: "white" }}>
+                {diseaseChart.title} {diseaseChart.id}
+              </div>
+              <button
+                onClick={() =>
+                  toggleFavoriteChart({
+                    chartId: diseaseChart.id!,
+                    isFavorite: !diseaseChart.isFavorite,
+                  })
+                }
+              >
+                {diseaseChart.isFavorite ? "Unlike me" : "Like me"}
+              </button>
+              <BarChart width={730} height={250} data={diseaseChart.results}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis dataKey="metric_value" />
+                <Tooltip />
+
+                <Legend />
+                <Bar dataKey="metric_value" fill="#8884d8" />
+              </BarChart>
+            </div>
+          ))}
         </div>
       </main>
     </>
