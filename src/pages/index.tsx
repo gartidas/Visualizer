@@ -14,7 +14,12 @@ import {
 } from "recharts";
 
 export default function Home() {
-  const items = api.chart.getCharts.useQuery();
+  const { data: firstPageData } =
+    api.chart.getDiseaseDataByPageNumber.useQuery(null);
+  const { data: secondPageData } =
+    api.chart.getDiseaseDataByPageNumber.useQuery({
+      pageNumber: 2,
+    });
 
   return (
     <>
@@ -52,7 +57,7 @@ export default function Home() {
               </div>
             </Link>
           </div>
-          <BarChart width={730} height={250} data={items.data?.results}>
+          <BarChart width={730} height={250} data={firstPageData?.results}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis dataKey="metric_value" />
@@ -60,6 +65,16 @@ export default function Home() {
             <Legend />
             <Bar dataKey="metric_value" fill="#8884d8" />
           </BarChart>
+          <button>Like me</button>
+          <BarChart width={730} height={250} data={secondPageData?.results}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis dataKey="metric_value" />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="metric_value" fill="#8884d8" />
+          </BarChart>
+          <button>Like me</button>
         </div>
       </main>
     </>

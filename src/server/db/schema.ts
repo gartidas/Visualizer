@@ -14,6 +14,6 @@ export const createTable = pgTableCreator((name) => `visualizer_${name}`);
 
 export const charts = createTable("chart", {
   id: serial("id").primaryKey(),
-  url: varchar("url", { length: 256 }),
+  url: varchar("url", { length: 256 }).notNull(),
   isFavorite: boolean("is_favorite"),
 });
