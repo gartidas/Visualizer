@@ -3,9 +3,18 @@ import Link from "next/link";
 
 import { api } from "~/utils/api";
 import styles from "./index.module.css";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
+  const items = api.chart.getCharts.useQuery();
 
   return (
     <>
@@ -43,9 +52,14 @@ export default function Home() {
               </div>
             </Link>
           </div>
-          <p className={styles.showcaseText}>
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-          </p>
+          <BarChart width={730} height={250} data={items.data?.results}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis dataKey="metric_value" />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="metric_value" fill="#8884d8" />
+          </BarChart>
         </div>
       </main>
     </>
