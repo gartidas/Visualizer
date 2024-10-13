@@ -26,7 +26,6 @@ export const chartsRouter = createTRPCRouter({
   toggleFavoriteChart: publicProcedure
     .input(z.object({ chartId: z.number(), isFavorite: z.boolean() }))
     .mutation(async ({ input }) => {
-      console.log(input);
       const [diseaseChart] = await db
         .update(diseaseCharts)
         .set({ isFavorite: input.isFavorite })
