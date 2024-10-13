@@ -5,11 +5,15 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
+import { ConfigProvider } from "antd";
+
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <div className={GeistSans.className}>
-      <Component {...pageProps} />
-    </div>
+    <ConfigProvider>
+      <div className={GeistSans.className}>
+        <Component {...pageProps} />
+      </div>
+    </ConfigProvider>
   );
 };
 
