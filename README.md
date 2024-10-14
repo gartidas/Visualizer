@@ -8,6 +8,5 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 - [Drizzle](https://orm.drizzle.team)
 - [tRPC](https://trpc.io)
 - [ant.design](https://ant.design/)
-- [ant.design](https://www.postgresql.org/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Recharts](https://recharts.org/)
