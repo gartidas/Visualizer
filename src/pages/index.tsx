@@ -23,14 +23,12 @@ export default function Home() {
   const chartWidth = useBreakpointValue({
     xs: 250,
     md: 500,
-    xl: 600,
-    xxl: 800,
+    xxxl: 700,
   });
   const chartHeight = useBreakpointValue({
     xs: 200,
     md: 400,
-    xl: 500,
-    xxl: 500,
+    xxxl: 600,
   });
 
   const { data, isLoading } = api.chart.getDiseaseMetrics.useQuery();
