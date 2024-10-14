@@ -10,3 +10,7 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 - [ant.design](https://ant.design/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Recharts](https://recharts.org/)
+
+## Deployment
+
+[Vercel](https://visualizer-pearl-eight.vercel.app/)
