@@ -11,7 +11,7 @@ export const SubMenu = () => {
   return (
     <div className={styles.subMenu}>
       <Title level={4} className={styles.title}>
-        COVID-19 Charts
+        COVID-19 Charts (England)
       </Title>
       <div className={styles.actionButtons}>
         <Button type="text">
