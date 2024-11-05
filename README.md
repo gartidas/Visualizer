@@ -33,7 +33,7 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 -	Above charts, there is a space (a panel) for Page title and dummy buttons (as per design, without any logic behind)
 -	[OPTIONAL] Add a heart icon (not on design below!) to cards which allows visitors to select card as a favorite (use trpc for this feature)
 
-![UX design](https://asset.cloudinary.com/gartidas/8263c3fd7e6d7fcbe33254cd957efb35)
+![UX design](https://res.cloudinary.com/gartidas/image/upload/v1730812620/dfgsyhdfg_qnet7j.png)
  
 ### Delivery & Timeline
 -	Deploy application on vercel (free tier, custom domain not required)
